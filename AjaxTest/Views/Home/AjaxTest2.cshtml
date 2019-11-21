@@ -1,0 +1,33 @@
+﻿@model AjaxTest.Models.AjaxTestModel
+
+@{
+    ViewBag.Title = "AjaxTest2";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>AjaxTest2</h2>
+
+@Html.ValidationSummary()
+
+@using (Html.BeginForm())
+{
+
+    @Html.CheckBoxFor(x => x.OptIn)
+    @Html.ValidationMessageFor(x => x.OptIn)
+    <br />
+
+    @Html.TextBoxFor(x => x.Name)
+    @Html.ValidationMessageFor(x => x.Name)
+    <br />
+
+
+    <input type="submit" value="submit" />
+}
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            console.log("ready to rock and roll....");
+        });
+    </script>
+}

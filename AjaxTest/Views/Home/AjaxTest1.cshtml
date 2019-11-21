@@ -1,0 +1,44 @@
+﻿@model AjaxTest.Models.AjaxTestModel
+@{ ViewBag.Title = "AjaxTest1";}
+<h2>AjaxTest1</h2>
+@using (Ajax.BeginForm("AjaxTest1", "Home", null,
+    new AjaxOptions
+    {
+        HttpMethod = "POST",
+        OnBegin = "OnBegin",
+        OnSuccess = "OnSuccess(xhr)",
+        OnFailure = "OnFailure(xhr, status)"
+    },
+    new { id = "myform" }))
+{
+
+    @Html.CheckBoxFor(model => model.OptIn);
+
+    @Html.TextBoxFor(model => model.Name);
+    @Html.ValidationMessageFor(model => model.Name);
+
+    <span id="lbl_message"></span>
+    <br />
+    <button id="btn_submit" type="submit" class="">Submit</button>
+}
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            console.log("ready to rock and roll....");
+
+
+        });
+        function OnBegin() {
+            console.log("OnBegin");
+        }
+        function OnSuccess(xhr) {
+            console.log("OnComplete");
+            $("#lbl_message").text("Ok:" + xhr.responseJSON.param2);
+        }
+        function OnFailure(xhr, status) {
+            console.log("OnFailure");
+            $("#lbl_message").text("Error:" + xhr.responseJSON.param2);
+        }
+    </script>
+}

@@ -1,0 +1,144 @@
+﻿@model AjaxTest.Models.SearchUsersMain
+
+@{
+    ViewBag.Title = "SearchUsers";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>SearchUsers</h2>
+
+@using (Ajax.BeginForm("SearchUsers", "Account", null,
+    new AjaxOptions
+    {
+        OnBegin = "OnBegin",
+        OnSuccess = "OnSuccess",
+        OnFailure = "OnFailure",
+        HttpMethod = "Post"
+    },
+    new { id = "myform" }))
+{
+
+    @Html.AntiForgeryToken()
+
+    <div class="logo mb-3">
+        <div class="col-md-12 text-center">
+            <h2>Edit the user account using the fields below:</h2>
+        </div>
+    </div>
+    <div class="form-horizontal">
+        <div class="col-xs-1"></div>
+        <div class="col-xs-10">
+            <div id="div_SearchUsersPartial" class="form-group">
+                @Html.Partial("SearchUsersPartial", Model)
+            </div>
+            <div id="divSearchUsersResults" class="clearfix"></div>
+        </div>
+        <div class="col-xs-1"> </div>
+    </div>
+    <div style="clear:both"></div>
+
+}
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            console.log("ready to rock and roll....");
+            $(".small_inp_box:first").focus();
+            $(".small_inp_box").addClass("lgreen");
+            $("input:password").addClass("lgreen");
+            $("input:password").addClass("form-control");
+            $("#tbl_userroles").dataTable({ searching: false, info: false, lengthChange: false });
+        });
+
+        function OnBegin() {
+            console.log("OnBegin");
+        };
+        function OnSuccess(response) {
+            console.log("OnSuccess");
+            $("#divSearchUsersResults").html(response.partialViewStr);
+            $("#tblSearchUsersResults").dataTable(
+                {
+                    searching: false, info: false, lengthChange: false,
+                    dom: 'l<"toolbar">frtip',
+                    initComplete: function(){
+                          $("div.toolbar")
+                             .html('<button type="button" id="any_button">Click Me!</button>');           
+                    }   
+
+                });
+        };
+        function OnFailure() {
+            console.log("OnFailure");
+        };
+
+
+        function Search() {
+            console.log("Search");
+            $("#div_SearchUsersPartial").load("SearchUsersPartial",
+                {
+                    Email: $("#SrchEmail").val(),
+                    fName: $("#SrchFirstName").val(),
+                    lName: $("#SrchLastName").val()
+                });
+            InitialiazeSearchResults();
+            return false;
+        };
+
+
+        @*function Search2() {
+            console.log("Search");
+            var url = '@Url.Action("GetUsersJson")'
+
+            var jqxhr = $.getJSON(url,
+                function (Data)
+                {
+                    console.log("getJSON success");
+                    $("#tbl_userroles").empty();
+                    var tr;
+                    for (var i = 0; i < Data.length; i++) {
+                        tr = $('<tr/>');
+                        tr.append("<td>" + Data[i].UserId + "</td>");
+                        tr.append("<td>" + Data[i].Email + "</td>");
+                        tr.append("<td>" + Data[i].FirstName + "</td>");
+                        tr.append("<td>" + Data[i].LastName + "</td>");
+                        tr.append("<td>"+"</td>");
+                        $('table').append(tr);
+                    }
+                    $("#tbl_userroles").dataTable({ destroy: true, searching: false, info: false, lengthChange: false });
+                }
+            )
+            .fail(function () {
+                console.log("getJSON fail");
+
+            })
+
+
+            $.ajax({
+                type: 'GET',
+                url: '@Url.Action("GetUsersJson")',
+                datatype: JSON,
+                data: {
+                    'fName': $("#SrchFirstName").val()
+                },
+                success: function(data) {
+                    console.log("Get Success");
+                    $('#tbl_userroles tbody').empty();
+                },
+                error: function (data) {
+                    console.log("Get Failed");
+                    $('#tbl_userroles tbody').empty();
+            }
+            });
+            return false;
+        }*@
+
+        function InitialiazeSearchResults() {
+            console.log("InitialiazeSearchResults");
+            //    $(".small_inp_box:first").focus();
+            //    $(".small_inp_box").addClass("lgreen");
+            //    $("#tbl_userroles").dataTable().fnDestroy();
+            //    $("#tbl_userroles").dataTable({ searching: false, info: false, lengthChange: false });
+        }
+
+    </script>
+}

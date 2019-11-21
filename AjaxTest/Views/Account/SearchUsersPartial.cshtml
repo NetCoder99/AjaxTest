@@ -1,0 +1,22 @@
+﻿@model AjaxTest.Models.SearchUsersMain
+
+        <h4>Add user to this role:</h4>
+        <div class="row margin_bottom_small">
+            <div class="col-xs-4 margin_bottom_small">
+                @Html.LabelFor(model => model.SrchEmail, htmlAttributes: new { @class = "control-label" })
+                @Html.EditorFor(model => model.SrchEmail, new { htmlAttributes = new { @class = "form-control small_inp_box" } })
+            </div>
+            <div class="col-xs-3  margin_left_1em">
+                @Html.LabelFor(model => model.SrchFirstName, htmlAttributes: new { @class = "control-label" })
+                @Html.EditorFor(model => model.SrchFirstName, new { htmlAttributes = new { @class = "form-control  small_inp_box" } })
+            </div>
+            <div class="col-xs-3  margin_left_1em">
+                @Html.LabelFor(model => model.SrchLastName, htmlAttributes: new { @class = "control-label" })
+                @Html.EditorFor(model => model.SrchLastName, new { htmlAttributes = new { @class = "form-control  small_inp_box" } })
+            </div>
+            <div class="col-xs-1  margin_left_2em">
+                <label class="control-label">&nbsp;</label>
+                <label class="control-label">&nbsp;</label>
+                <input type="submit" id="btn_search" value="Search" class="btn btn-default btn-primary" />
+            </div>
+        </div>
